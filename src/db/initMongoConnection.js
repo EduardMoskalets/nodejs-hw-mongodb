@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { env } from '../utils/env.js';
 
-// const DB_URI = "mongodb+srv://edikmoskalets:<db_password>@cluster0.5qu9w.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+// const DB_URI = process.env.BD_URI;
 
 export const initMongoConnection = async () => {
   try {
