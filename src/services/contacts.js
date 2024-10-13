@@ -1,22 +1,35 @@
-import { ContactsCollection } from '../db/models/contact.js';
+import express from 'express';
+import pino from 'pino-http';
+import cors from 'cors';
+import { env } from './utils/env.js';
+import contactsRouter from './routers/contacts.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
 
+const PORT = Number(env('PORT', '3000'));
 
-export const getAllContacts = async () => {
-  try {
-    const contacts = await ContactsCollection.find();
+export const setupServer = () => {
+  const app = express();
 
-    return contacts;
-  } catch (error) {
-    console.log(error.message);
-  }
-};
+  app.use(express.json());
 
-export const getContactById = async (contactId) => {
-  try {
-    const contact = await ContactsCollection.findById(contactId);
+  app.use(cors());
 
-    return contact;
-  } catch (error) {
-    console.log(error.message);
-  }
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
+
+  app.use(contactsRouter);
+
+  app.use('*', notFoundHandler);
+
+  app.use(errorHandler);
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 };
