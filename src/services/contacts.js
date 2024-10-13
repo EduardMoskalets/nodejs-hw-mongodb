@@ -1,35 +1,43 @@
-import express from 'express';
-import pino from 'pino-http';
-import cors from 'cors';
-import { env } from './utils/env.js';
-import contactsRouter from './routers/contacts.js';
-import { errorHandler } from './middlewares/errorHandler.js';
-import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { ContactsCollection } from '../db/models/contact.js';
 
-const PORT = Number(env('PORT', '3000'));
+export const getAllContacts = async () => {
+  const contacts = await ContactsCollection.find();
+  return contacts;
+};
 
-export const setupServer = () => {
-  const app = express();
+export const getContactById = async (contactId) => {
+  const contact = await ContactsCollection.findById(contactId);
+  return contact;
+};
 
-  app.use(express.json());
+export const createContact = async (payload) => {
+  const contact = await ContactsCollection.create(payload);
+  return contact;
+};
 
-  app.use(cors());
-
-  app.use(
-    pino({
-      transport: {
-        target: 'pino-pretty',
-      },
-    }),
+export const updateContact = async (contactId, payload, options = {}) => {
+  const rawResult = await ContactsCollection.findOneAndUpdate(
+    { _id: contactId },
+    payload,
+    {
+      new: true,
+      includeResultMetadata: true,
+      ...options,
+    },
   );
 
-  app.use(contactsRouter);
+  if (!rawResult || !rawResult.value) return null;
 
-  app.use('*', notFoundHandler);
+  return {
+    contact: rawResult.value,
+    isNew: Boolean(rawResult?.lastErrorObject?.upserted),
+  };
+};
 
-  app.use(errorHandler);
-
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+export const deleteContact = async (contactId) => {
+  const contact = await ContactsCollection.findOneAndDelete({
+    _id: contactId,
   });
+
+  return contact;
 };
