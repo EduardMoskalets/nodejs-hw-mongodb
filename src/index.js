@@ -10,14 +10,3 @@ bootstrap();
 
 // ==================================================================================================================================================
 
-// const bootstrap = async () => {
-//   try {
-//     await initMongoConnection();
-
-//     setupServer();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// bootstrap();
