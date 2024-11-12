@@ -1,9 +1,8 @@
 type: object
 required:
-  - _id
+  - contactType
   - name
   - phoneNumber
-  - userId
 properties:
   _id:
     description: "Contact's id"
@@ -35,5 +34,6 @@ properties:
     example: 66b68bf3715215e8a074219e
   photo:
     description: "Link to contact's photo"
-    type: string
+    type: binary
     example: https://res.cloudinary.com/dim9kuj10/image/upload/v1723465603/daaqiw5j255soydp6dsu.jpg
+    default: null
