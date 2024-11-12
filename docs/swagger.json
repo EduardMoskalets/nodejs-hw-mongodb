@@ -11,10 +11,10 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "https://localhost:3000"
     },
     {
-      "url": "https://example.com/api/v1"
+      "url": "https://nodejs-hw-mongodb-5-8bzh.onrender.com"
     }
   ],
   "tags": [
@@ -473,8 +473,7 @@
                 "required": [
                   "name",
                   "phoneNumber",
-                  "contactType",
-                  "userId"
+                  "contactType"
                 ],
                 "properties": {
                   "name": {
@@ -514,6 +513,7 @@
                   "photo": {
                     "description": "Link to contact's photo",
                     "type": "string",
+                    "format": "binary",
                     "example": "https://res.cloudinary.com/dim9kuj10/image/upload/v1723465603/daaqiw5j255soydp6dsu.jpg"
                   }
                 }
@@ -794,10 +794,9 @@
       "contact": {
         "type": "object",
         "required": [
-          "_id",
+          "contactType",
           "name",
-          "phoneNumber",
-          "userId"
+          "phoneNumber"
         ],
         "properties": {
           "_id": {
@@ -842,7 +841,9 @@
           "photo": {
             "description": "Link to contact's photo",
             "type": "string",
-            "example": "https://res.cloudinary.com/dim9kuj10/image/upload/v1723465603/daaqiw5j255soydp6dsu.jpg"
+            "format": "binary",
+            "example": "https://res.cloudinary.com/dim9kuj10/image/upload/v1723465603/daaqiw5j255soydp6dsu.jpg",
+            "default": null
           }
         }
       }
